@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mat Dalgleish</title>
+  <style>
+    :root {
+      --bg: #fcfcfc;
+      --fg: #000;
+      --accent: #ff00aa;
+      --gold: #d4af37;
+      --border: #000;
+      --border-thick: 6px;
+    }
+    html, body { height: 100%; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; line-height: 1.45; letter-spacing: 0.2px; }
+
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; border-left: var(--border-thick) solid var(--border); border-right: var(--border-thick) solid var(--border); min-height: 100dvh; display: grid; grid-template-rows: auto auto 1fr auto; gap: 32px; }
+
+    header { border: var(--border-thick) solid var(--border); padding: 16px 12px; display: grid; grid-template-columns: 1fr auto; align-items: center; position: sticky; top: 0; background: var(--bg); z-index: 10; }
+    h1 { margin: 0; font-size: clamp(20px, 4.5vw, 56px); line-height: 0.95; text-transform: uppercase; letter-spacing: 1px; }
+    a { color: inherit; text-decoration: none; }
+    .nav a:focus-visible, button:focus-visible { outline: 4px dashed var(--accent); outline-offset: 4px; }
+    .nav { display:flex; gap: 10px; flex-wrap: wrap; }
+    .nav a { display: inline-block; padding: 12px 14px; border: 4px solid var(--border); text-transform: uppercase; font-weight: 800; min-width: 44px; min-height: 44px; line-height: 1; background: var(--bg); }
+    .menu-toggle { display:none; }
+    .menu-toggle button { appearance: none; cursor: pointer; background: var(--fg); color: var(--bg); border: 4px solid var(--border); padding: 10px 12px; font-weight: 800; text-transform: uppercase; min-width: 44px; min-height: 44px; }
+
+    .hero { border: var(--border-thick) solid var(--border); padding: 16px; display: grid; gap: 12px; }
+    .hero p { font-size: clamp(16px, 3.5vw, 22px); margin: 0; }
+
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
+    .cell { border: var(--border-thick) solid var(--border); padding: 16px; background: #fff; }
+
+    .cell.about p { font-size: clamp(16px, 3.5vw, 22px); }
+    .cell.about p a { color: blue; text-decoration: underline; }
+
+    /* Match Projects type size for Links & Contact */
+    .cell.links p, .cell.links li, .cell.contact p { font-size: clamp(16px, 3.5vw, 22px); }
+
+    .footer { border: var(--border-thick) solid var(--border); padding: 16px; display:flex; gap:12px; justify-content: space-between; align-items:center; flex-wrap: wrap; }
+
+    .texts { border: var(--border-thick) solid var(--border); padding: 0; background: #fff; }
+    svg { width: 100%; height: clamp(180px, 40vw, 260px); display:block; }
+    .belt { fill: #222; }
+    .roller { fill: #111; }
+    .tread { stroke: #fff; stroke-width: 6; stroke-dasharray: 20 16; }
+    .machine { fill: #eaeaea; stroke: #000; stroke-width: 6; }
+    .window { fill: #c0e7ff; stroke: #000; stroke-width: 6; }
+    .gear { fill: #000; transform-origin: center; animation: spin 4s linear infinite; }
+    .gear.slow { animation-duration: 7s; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .item rect { fill: var(--gold); stroke: #000; stroke-width: 2; }
+    .item text { font-size: 32px; }
+
+    @media (prefers-reduced-motion: reduce) { .gear { animation: none; } }
+
+    /* Layout rules */
+    .about { grid-column: span 12; }
+
+    /* Default desktop: two-up (6 + 6) for Links & Contact when in same grid section */
+    .links, .contact { grid-column: span 6; }
+
+    /* Laptop / medium: keep them side-by-side (3 + 3 on a 6-col grid) */
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(6, 1fr); }
+      .about { grid-column: span 6; }
+      .links, .contact { grid-column: span 3; }
+    }
+
+    /* Mobile: stack */
+    @media (max-width: 700px) {
+      header { grid-template-columns: auto auto; gap: 8px; }
+      .menu-toggle { display:block; justify-self: end; }
+      .nav { width: 100%; display:none; }
+      .nav.open { display:flex; }
+      .wrap { padding: 12px; gap: 20px; }
+      :root { --border-thick: 5px; }
+      .links, .contact { grid-column: span 6; }
+    }
+
+    @media (max-width: 420px) {
+      :root { --border-thick: 4px; }
+      .hero, .cell, .footer { padding: 12px; }
+      .nav a { padding: 10px 12px; border-width: 3px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Mat Dalgleish</h1>
+      <div class="menu-toggle"><button id="menuBtn" aria-expanded="false" aria-controls="primaryNav">Menu</button></div>
+      <nav class="nav" id="primaryNav" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="https://docs.google.com/document/d/1NKIVnckCypqJ6nQe4XtzdAUbXXgYZuG5rmtrxHeSne8/edit?usp=sharing" target="_blank" rel="noopener">Texts</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero" id="about">
+      <p><strong>Bio:</strong> Dr. Mat Dalgleish is a researcher, educator, and artist-designer working at the intersection of people, musical and audiovisual technology, and accessibility. He has particular interests in synthesis and procedural generation, and is also a congenitally one-handed musician. With an initial background in sculpture, Mat subsequently studied for an MA in Media Arts with interactive media pioneer Rolf Gehlhaar, before a CETL-funded PhD that explored David Tudor-inspired approaches to digital musical instrument design. From 2009-11 Mat was a visiting researcher at The OU Music Computing Lab and from 2011-2023 led a variety of undergraduate and postgraduate music/audio and creative technology and performing arts provision at the University of Wolverhampton. He was awarded Senior Fellowship of the HEA (SFHEA) in 2016. Mat is currently Senior Lecturer in Game Audio and Technical Design at the University of Staffordshire, a Leonardo CripLab AI fellow, an Accessibility Chair of NIME 2026, and a trustee of The OHMI Trust.</p></p>
+    </section>
+
+    <section class="grid" id="projects" aria-label="Projects">
+      <div class="cell about">
+        <h2>Projects</h2>
+        <p>My earliest works, such as <a href="https://direct.mit.edu/lmj/article-abstract/doi/10.1162/LMJ_a_01011/69469/LOOP-A-Circular-Ferric-Memory-in-Slow-Decline?redirectedFrom=fulltext" target="_blank" rel="noopener">Loop (2004–)</a>, explored the latent possibilities of obsolete technologies, treating obsolescence as renewal and a site for hacking, recombination, and re-use. Later projects extended this techno-archaeological interest through contemporary (largely digital) means, probing the temporal, spatial, and social logics of technology with emphasis on accessibility and human–technology relations. <a href="https://collinsandgoto.com/wp-content/uploads/2018/10/2017-Collins-Goto-imgination-Empathy-Artists-w-Trees.pdf" target="_blank" rel="noopener">Eden3 (2008–10)</a> sonified real-time sensor data from trees; <a href="https://oro.open.ac.uk/18900/1/HapticDrumKitTEI2010.pdf" target="_blank" rel="noopener">Haptic Drum Kit (2010–11)</a>, <a href="https://oro.open.ac.uk/35072/1/The%20Haptic%20Bracelets.pdf" target="_blank" rel="noopener">Haptic Bracelets (2011–12)</a>, and <a href="https://link.springer.com/chapter/10.1007/978-1-4471-2990-5_12" target="_blank" rel="noopener">Song Walker Harmony Space (2010–12)</a> employed whole-body interaction for learning musical skills; <a href="https://wlv.openrepository.com/items/c6eac4ae-6e23-440a-b11c-b0e8c3150844" target="_blank" rel="noopener">Beyond Audio Description (2017)</a> reframed AD in theatre through ambient sound design; <a href="https://www.taylorfrancis.com/chapters/edit/10.4324/9780429345388-14/sound-objects-mat-dalgleish-sarah-whitfield" target="_blank" rel="noopener">Interior (2020)</a> reimagined Maeterlinck’s Intérieur as a procedurally generated radio play for COVID times; and the <a href="https://eudl.eu/doi/10.4108/icst.pervasivehealth.2011.246040" target="_blank" rel="noopener">Music Jacket (2011)</a>, <a href="https://wlv.openrepository.com/items/92971931-af9c-4b89-91fc-98784e8ef49b" target="_blank" rel="noopener">Postrum (2014)</a>, <a href="https://eprints.staffs.ac.uk/8509/1/TYG_NoiseFloor2024_final.pdf" target="_blank" rel="noopener">TYG (2024)</a>, and <a href="https://nime.org/proceedings/2025/nime2025_11.pdf" target="_blank" rel="noopener">Chimera (2025)</a> reimagined musical instrument design’s privileging of acoustics over player needs. Across these projects runs a sustained fascination with the audiovisual—particularly the synthetic—and its crossover with other senses.</p>
+      </div>
+    </section>
+
+    <!-- Combined Links + Contact grid so they sit side by side on laptop -->
+    <section class="grid" id="contact" aria-label="Links and Contact">
+      <div class="cell links">
+        <h2>Links</h2>
+        <ul>
+          <li><a href="https://scholar.google.com/citations?user=XXKExGkAAAAJ&hl=en" target="_blank" rel="noopener">Scholar Profile</a></li>
+          <li><a href=\"gallery.html\">Gallery</a></li>
+          <li><a href="https://mat-d.hashnode.dev/" target="_blank" rel="noopener">Further projects/Blog</a></li>
+          <li><a href="https://uf-4.bandcamp.com/" target="_blank" rel="noopener">Bandcamp</a></li>
+          <li><a href="https://docs.google.com/document/d/157du-t_wixKpkG2Hr05XYGqNHkttaDMREHozoHfzA2g/edit?usp=sharing" target="_blank" rel="noopener">CV</a></li>
+          <li><a href="https://www.ohmi.org.uk/" target="_blank" rel="noopener">OHMI Trust</a></li>
+          <li><a href="https://nime2026.org/" target="_blank" rel="noopener">NIME 2026</a></li>
+        </ul>
+      </div>
+      <div class="cell contact">
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:mathewdalgleish@gmail.com">mathewdalgleish@gmail.com</a></p>
+        <p>Mastodon: <a href="https://mstdn.social/@drd" target="_blank" rel="me">@drd</a></p>
+        <p><a href="https://www.linkedin.com/in/mat-dalgleish-b4406424a/" target="_blank" rel="noopener">Connect on LinkedIn</a></p>
+      </div>
+    </section>
+
+    <section class="texts" id="texts" aria-label="Texts">
+      <svg viewBox="0 0 1200 260" role="img" aria-label="A conveyor belt feeds a machine that turns waste into gold bars">
+        <rect class="belt" x="0" y="66" width="1200" height="34" rx="4"/>
+        <line class="tread" x1="0" y1="83" x2="1200" y2="83"/>
+        <circle class="roller" cx="80" cy="83" r="18"/>
+        <circle class="roller" cx="380" cy="83" r="18"/>
+        <circle class="roller" cx="680" cy="83" r="18"/>
+        <circle class="roller" cx="980" cy="83" r="18"/>
+        <!-- Surface line under machine -->
+        <line x1="0" y1="177" x2="1200" y2="177" stroke="#000" stroke-width="6"/>
+        <!-- Machine moved up by 10px -->
+        <g id="machine" transform="translate(520,10)">
+          <rect class="machine" x="0" y="0" width="160" height="150" rx="8"/>
+          <g>
+            <rect x="0" y="0" width="160" height="26" fill="#ffeb3b" stroke="#000" stroke-width="6"/>
+            <path d="M0 0 L20 0 L0 26 Z M40 0 L60 0 L40 26 Z M80 0 L100 0 L80 26 Z M120 0 L140 0 L120 26 Z" fill="#000"/>
+          </g>
+          <rect class="window" x="18" y="44" width="124" height="64" rx="4"/>
+          <g transform="translate(52,76)">
+            <g class="gear slow">
+              <circle r="18"/>
+              <g>
+                <rect x="-2" y="-30" width="4" height="10"/>
+                <rect x="-2" y="20" width="4" height="10"/>
+                <rect x="20" y="-2" width="10" height="4"/>
+                <rect x="-30" y="-2" width="10" height="4"/>
+              </g>
+            </g>
+          </g>
+          <g transform="translate(108,76)">
+            <g class="gear">
+              <circle r="14"/>
+              <g>
+                <rect x="-2" y="-24" width="4" height="8"/>
+                <rect x="-2" y="16" width="4" height="8"/>
+                <rect x="16" y="-2" width="8" height="4"/>
+                <rect x="-24" y="-2" width="8" height="4"/>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="items"></g>
+      </svg>
+    </section>
+
+    <div class="footer">
+      <div>© <span id="year"></span> Mat Dalgleish</div>
+      <div>Made with simple HTML/CSS/JS.</div>
+    </div>
+  </div>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const nav = document.getElementById('primaryNav');
+    menuBtn.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', String(open));
+    });
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ---- Conveyor animation (complete) ----
+    (function() {
+      const SVG_NS = 'http://www.w3.org/2000/svg';
+      const root = document.getElementById('items');
+      const width = 1200;
+      const laneY = 83;
+      const speed = 0.9;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const machineX = 520;
+      const machineW = 160;
+      const convertZoneStart = machineX - 8;
+      const convertZoneEnd = machineX + machineW + 8;
+
+      const count = 10;
+      const spacing = width / count;
+      const items = [];
+
+      function makeItem(i) {
+        const g = document.createElementNS(SVG_NS, 'g');
+        g.setAttribute('class', 'item');
+        const t = document.createElementNS(SVG_NS, 'text');
+        t.textContent = '💩';
+        t.setAttribute('y', 10);
+        g.appendChild(t);
+        root.appendChild(g);
+        const x0 = -i * spacing - 60; // start off-screen
+        return { g, x: x0, y: laneY, state: 'poop' };
+      }
+
+      for (let i = 0; i < count; i++) items.push(makeItem(i));
+
+      function draw(it) {
+        while (it.g.firstChild) it.g.removeChild(it.g.firstChild);
+        if (it.state === 'gold') {
+          for (let i = 0; i < 3; i++) {
+            const bar = document.createElementNS(SVG_NS, 'rect');
+            bar.setAttribute('x', -14);
+            bar.setAttribute('y', -6 - i * 6);
+            bar.setAttribute('width', 28);
+            bar.setAttribute('height', 6);
+            it.g.appendChild(bar);
+          }
+        } else {
+          const t = document.createElementNS(SVG_NS, 'text');
+          t.textContent = '💩';
+          t.setAttribute('y', 10);
+          it.g.appendChild(t);
+        }
+        it.g.setAttribute('transform', `translate(${it.x}, ${it.y})`);
+      }
+
+      function step() {
+        for (const it of items) {
+          it.x += speed;
+
+          if (it.state === 'poop' && it.x > convertZoneStart && it.x < convertZoneEnd) {
+            it.state = 'gold';
+          }
+
+          if (it.x > width + 40) {
+            it.x = -spacing - 80;
+            it.state = 'poop';
+          }
+
+          draw(it);
+        }
+        if (!reduceMotion) requestAnimationFrame(step);
+      }
+
+      for (const it of items) draw(it);
+      if (!reduceMotion) requestAnimationFrame(step);
+    })();
+  </script>
+</body>
+</html>
